@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <b-container>
-      <h1>Welcome to the Todo Vuex application</h1>
+      <h1>Welcome to the update Todo Vuex application</h1>
       <p>Here a few of the tasks you have to do:</p>
       <b-list-group>
         <b-list-group-item v-for="item in todo" :key="item.id" >
