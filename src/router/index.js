@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../pages/Home.vue'
 import AddTodo from '../pages/AddTodo.vue'
 import ViewTodo from '../pages/ViewTodo.vue'
+import RecycleBin from '../pages/RecycleBin.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/view-todo/:id',
     name: 'ViewTodo',
     component: ViewTodo
+  },
+  {
+    path: '/bin',
+    name: 'RecycleBin',
+    component: RecycleBin
   }
 ]
 

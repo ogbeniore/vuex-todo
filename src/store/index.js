@@ -11,51 +11,41 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    todoItems: [
-      {
-        title: 'Eat',
-        isComplete: false,
-        description: 'ssign responsive-friendly margin or padding values to an element or a subset of its sides with shorthand classes. Includes support for individual properties, all properties, and vertical and horizontal properties.',
-        id: 1
-      },
-      {
-        title: 'Sleep',
-        isComplete: false,
-        description: 'ssign responsive-friendly margin or padding values to an element or a subset of its sides with shorthand classes. Includes support for individual properties, all properties, and vertical and horizontal properties.',
-        id: 2
-      },
-      {
-        title: 'Code',
-        isComplete: false,
-        description: 'ssign responsive-friendly margin or padding values to an element or a subset of its sides with shorthand classes. Includes support for individual properties, all properties, and vertical and horizontal properties.',
-        id: 3
-      }
-    ],
-    deletedItems: []
+    todoItems: [],
+    deletedItems: [],
+    currentId: 0
   },
   mutations: {
     updateTodoItems: (state, payload) => { state.todoItems.push(payload) },
-    updateDeletedItems: (state, payload) => { state.deletedItems.push(payload) }
+    updateDeletedItems: (state, payload) => { state.deletedItems.push(payload) },
+    updateCurrentId: (state) => { state.currentId += 1 },
+    removeItem: (state, payload) => {
+      state.todoItems = state.todoItems.filter(item => item.id !== payload)
+    },
+    removeDeletedItem: (state, payload) => {
+      state.deletedItems = state.deletedItems.filter(item => item.id !== payload)
+    }
   },
   actions: {
     addTodoItem: function (context, payload) {
-      let currentId = 0
-      const idArray = []
-      context.state.todoItems.forEach(item => {
-        idArray.push(item.id)
-      })
-      currentId = idArray.length ? Math.max(...idArray) : 0
+      const currentId = context.state.currentId
       const data = {
         ...payload,
         id: currentId + 1,
         isComplete: false
       }
       context.commit('updateTodoItems', data)
+      context.commit('updateCurrentId')
     },
     deleteTodoItem: function (context, payload) {
       const currentTodo = context.getters.getTodoById(payload)
       context.commit('updateDeletedItems', currentTodo)
-      console.log(currentTodo)
+      context.commit('removeItem', payload)
+    },
+    restoreTodoItem: function (context, payload) {
+      const currentTodo = context.state.deletedItems.find(item => item.id === payload)
+      context.commit('updateTodoItems', currentTodo)
+      context.commit('removeDeletedItem', payload)
     }
   },
   getters: {
@@ -63,7 +53,7 @@ export default new Vuex.Store({
     getTodoById: (state) => (id) => {
       return state.todoItems.find(item => item.id === id)
     },
-    getDeletedItem: (state) => state.deletedItems
+    getDeletedItems: (state) => state.deletedItems
   },
   plugins: [vuexLocal.plugin]
 })

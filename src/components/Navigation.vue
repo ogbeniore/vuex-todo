@@ -9,7 +9,7 @@
       <b-navbar-nav>
         <router-link to="/">Home</router-link>
         <router-link to="/add-todo">Add Todo</router-link>
-        <router-link to="/">Recycle Bin</router-link>
+        <router-link to="/bin">Recycle Bin</router-link>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
